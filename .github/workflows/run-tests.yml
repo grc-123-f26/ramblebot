@@ -11,19 +11,18 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Set up JDK 
-      uses: actions/setup-java@v3
+    - name: Set up JDK
+      uses: actions/setup-java@v4
       with:
-        distribution: 'temurin' 
-        java-version: '17'
+        distribution: 'temurin'
+        java-version: '25'
 
     - name: Compile
       run: |
-        mkdir -p src
         javac -cp lib/junit-platform-console-standalone-6.0.3.jar src/*.java
 
     - name: Test
       run: |
-        java -jar lib/junit-platform-console-standalone-6.0.3.jar -cp src --scan-classpath
+        java -jar lib/junit-platform-console-standalone-6.0.3.jar execute -cp src --scan-classpath
