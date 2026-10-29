@@ -34,16 +34,24 @@ public class LowercaseSentenceTokenizer implements Tokenizer {
     List<String> scannedWords = new ArrayList<>();
     Scanner cin = scanner;
 
-    while (cin.hasNextLine())
+    while (cin.hasNext())
     {
-      String currentWord = cin.nextLine();
-      if (currentWord.equals(" "))
+      String currentWord = cin.next().toLowerCase();
+      if (currentWord.charAt(currentWord.length() - 1) == '.')
       {
-        cin.nextLine();
+        String editedWord = "";
+        for (int i = 0; i < currentWord.length() -1; i ++)
+        {
+          editedWord += currentWord.charAt(i);
+        }
+        scannedWords.add(editedWord);
+        scannedWords.add(".");
       }
-      scannedWords.add(currentWord);
+      else {
+        scannedWords.add(currentWord);
+      }
     }
-    return null;
+    return scannedWords;
   }
 }
 
