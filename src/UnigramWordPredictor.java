@@ -119,9 +119,12 @@ public class UnigramWordPredictor implements WordPredictor {
     // Hint: only the last word in context should be looked at
     String lastWordInContext = context.get(context.size() -1);
     Random wordChance = new Random();
-    Double probabilityOfWord = 1.0;
     List<String> neighborsMapCopy= neighborMap.get(lastWordInContext);
-    int choosingRandomIndex = wordChance.nextInt(neighborsMapCopy.size());
+    if (!neighborsMapCopy.isEmpty())
+    {
+      int choosingRandomIndex = wordChance.nextInt(neighborsMapCopy.size());
+      return neighborsMapCopy.get(choosingRandomIndex);
+    }
     
     return null;
   }
