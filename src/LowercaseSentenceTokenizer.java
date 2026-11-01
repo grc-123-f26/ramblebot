@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,8 +30,33 @@ public class LowercaseSentenceTokenizer implements Tokenizer {
    * @return a list of tokens, where each token is a word or a period
    */
   public List<String> tokenize(Scanner scanner) {
-    // TODO: Implement this function to convert the scanner's input to a list of words and periods
-    return null;
+    List<String> tokens = new ArrayList<>();
+
+    while (scanner.hasNext()) {
+      String token = scanner.next();
+      String lowerCaseToken = token.toLowerCase();
+
+      // Split the token into its individual characters and store them in a char array, tokenChars
+      char[] tokenChars = lowerCaseToken.toCharArray();
+
+      // Check if the last character of the token is a period. 
+      // If so, add the original token without the period and add the period as a separate token
+      // Otherwise, add the token like normal
+      if (tokenChars[tokenChars.length - 1] == '.') {
+        String tokenWithoutPeriod = "";
+
+        for (int i = 0; i < tokenChars.length - 1; i++) {
+          tokenWithoutPeriod += tokenChars[i];
+        }
+        
+        tokens.add(tokenWithoutPeriod);
+        tokens.add(".");
+      } else { 
+        tokens.add(lowerCaseToken);
+      }
+    } 
+
+    return tokens;
   }
 }
 

@@ -179,4 +179,24 @@ class UnigramWordPredictorTest {
             }
         }
     }
+
+    // Bonus Extensions - additional test
+    /**
+     * Tests the predictNextWord method by checking that a generated string of text
+     * does not loop continuously over the same tokens upon reaching the second instance
+     * of a token.
+     */
+    // @Test
+    // void testPredictNextWordWithRepeatedWords() {
+    //     // Use a fake tokenizer with predefined tokens
+    //     FakeTokenizer fakeTokenizer = new FakeTokenizer(
+    //         List.of("the", "cat", "sat", ".", "the", "cat", "slept", ".", "the", "dog", "barked", ".")
+    //     );
+    //     UnigramWordPredictor predictor = new UnigramWordPredictor(fakeTokenizer);
+
+    //     predictor.train(null); // The scanner input is ignored by FakeTokenizer
+
+
+
+    // }
 }

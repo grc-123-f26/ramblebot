@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Scanner;
  * words that directly follow it in the text.
  */
 public class UnigramWordPredictor implements WordPredictor {
-  private Map<String, List<String>> neighborMap;
+  private static Map<String, List<String>> neighborMap;
   private Tokenizer tokenizer;
 
   /**
@@ -50,8 +51,27 @@ public class UnigramWordPredictor implements WordPredictor {
    */
   public void train(Scanner scanner) {
     List<String> trainingWords = tokenizer.tokenize(scanner);
+    neighborMap = new HashMap<>();
+    
+    for (int i = 0; i < trainingWords.size(); i++) {
 
-    // TODO: Convert the trainingWords into neighborMap here
+      // if at last index
+      if (i == trainingWords.size() - 1) {
+        break;
+      }
+      
+      if (!neighborMap.containsKey(trainingWords.get(i))) {
+        List<String> wordsAfterToken = new ArrayList<>();
+        wordsAfterToken.add(trainingWords.get(i + 1));
+
+        neighborMap.put(trainingWords.get(i), wordsAfterToken);
+      } else {
+        List<String> wordsAfterToken = neighborMap.get(trainingWords.get(i));
+        wordsAfterToken.add(trainingWords.get(i + 1));
+
+        neighborMap.put(trainingWords.get(i), wordsAfterToken);
+      }
+    }
   }
 
   /**
@@ -103,9 +123,21 @@ public class UnigramWordPredictor implements WordPredictor {
    * @return the predicted next word
    */
   public String predictNextWord(List<String> context) {
-    // TODO: Return a predicted word given the words preceding it
-    // Hint: only the last word in context should be looked at
-    return null;
+    String word = "";
+
+    for (int i = 0; i < context.size(); i++) {
+      word = context.get(i);
+    }
+      
+    // value from "context" referenced in word variable through above loop;
+    // test would throw NullPointerException if context was passed as an 
+    // argument directly below otherwise
+    List<String> nextWords = neighborMap.get(word);
+
+    Random random = new Random();
+    int randInt = random.nextInt(nextWords.size());
+    
+    return nextWords.get(randInt);
   }
   
   /**
