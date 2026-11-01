@@ -120,6 +120,8 @@ public class UnigramWordPredictor implements WordPredictor {
     String lastWordInContext = context.get(context.size() -1);
     Random wordChance = new Random();
     Double probabilityOfWord = 1.0;
+    List<String> neighborsMapCopy= neighborMap.get(lastWordInContext);
+    int choosingRandomIndex = wordChance.nextInt(neighborsMapCopy.size());
     
     return null;
   }
