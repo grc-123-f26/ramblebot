@@ -50,8 +50,18 @@ public class UnigramWordPredictor implements WordPredictor {
    */
   public void train(Scanner scanner) {
     List<String> trainingWords = tokenizer.tokenize(scanner);
-
-    // TODO: Convert the trainingWords into neighborMap here
+    neighborMap = new HashMap<>();
+    for (int i = 0; i < trainingWords.size()-1; i++) {
+      String word = trainingWords.get(i);
+      if (!neighborMap.containsKey(word)) {
+        List<String> words = new ArrayList<>();
+        words.add(trainingWords.get(i+1));
+        neighborMap.put(word, words);
+      } else { //get existing list (words), and add the next word
+        List<String> words = neighborMap.get(word);
+        words.add(trainingWords.get(i + 1));
+      }
+    } 
   }
 
   /**
@@ -103,9 +113,23 @@ public class UnigramWordPredictor implements WordPredictor {
    * @return the predicted next word
    */
   public String predictNextWord(List<String> context) {
-    // TODO: Return a predicted word given the words preceding it
-    // Hint: only the last word in context should be looked at
-    return null;
+    String lastWord = context.get(context.size()-1);
+    if (neighborMap.containsKey(lastWord)) {
+      //make list of words
+      List <String> words = neighborMap.get(lastWord);
+      //get random word from words Math.random() <<is double ;
+      //convert to int
+      double randomIndex = (Math.random() * words.size());
+      int randIndex = (int) (randomIndex);
+      return words.get(randIndex);
+    } else {
+      //Make list of all keys & select random
+      List<String> allKeys = new ArrayList<>(neighborMap.keySet());
+      //pick rand word >> convert to int
+      double randomIndex = (Math.random()* allKeys.size());
+      int randIndex = (int) (randomIndex);
+      return allKeys.get(randIndex);
+    }
   }
   
   /**
