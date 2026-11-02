@@ -117,7 +117,7 @@ public class UnigramWordPredictor implements WordPredictor {
     if (context.isEmpty() || neighborMap == null || neighborMap.isEmpty()) {
       return null;
     }
-
+// how does this even work what the hell
     String last = context.get(context.size() - 1);
     List<String> neighbors = neighborMap.get(last);
     if (neighbors == null) {
