@@ -142,7 +142,6 @@ public class UnigramWordPredictor implements WordPredictor {
       List<String> newList = new ArrayList<>(entry.getValue());
       copy.put(entry.getKey(), newList);
     }
-
     return copy;
   }
 }
