@@ -121,6 +121,9 @@ public class UnigramWordPredictor implements WordPredictor {
       //convert to int
       double randomIndex = (Math.random() * words.size());
       int randIndex = (int) (randomIndex);
+      return words.get(randIndex);
+    } else {
+      
     }
     return null;
   }
