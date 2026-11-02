@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Random;
 
 /**
  * A class for predicting the next word in a sequence using a unigram model.
@@ -48,10 +49,28 @@ public class UnigramWordPredictor implements WordPredictor {
    * 
    * @param scanner the Scanner to read the training text from
    */
-  public void train(Scanner scanner) {
+  public void train(Scanner scanner) 
+  {
     List<String> trainingWords = tokenizer.tokenize(scanner);
+    neighborMap = new HashMap<String, List<String>>();
 
-    // TODO: Convert the trainingWords into neighborMap here
+    for(int i = 0; i < trainingWords.size()-1; i++)
+    {
+      String current = trainingWords.get(i);
+      String next = trainingWords.get(i+1);
+
+      if(neighborMap.containsKey(current))
+      {
+        neighborMap.get(current).add(next);
+      }
+
+      else 
+      {
+        List<String> neighbor = new ArrayList<>();
+        neighbor.add(next);
+        neighborMap.put(current, neighbor);
+      }
+    }
   }
 
   /**
@@ -102,10 +121,24 @@ public class UnigramWordPredictor implements WordPredictor {
    * @param context a list of words representing the current context
    * @return the predicted next word
    */
-  public String predictNextWord(List<String> context) {
+  public String predictNextWord(List<String> context)
+  {
     // TODO: Return a predicted word given the words preceding it
     // Hint: only the last word in context should be looked at
-    return null;
+
+    String lastWord = context.get(context.size()-1);
+    List<String> predictedWords = neighborMap.get(lastWord);
+
+    Random random = new Random();
+    if(predictedWords == null)
+    {
+      List<String> all = new ArrayList<>(neighborMap.keySet());
+      int randomNum = random.nextInt(all.size());
+      return all.get(randomNum);
+    }
+
+    int randomNum = random.nextInt(predictedWords.size());
+    return predictedWords.get(randomNum);
   }
   
   /**
