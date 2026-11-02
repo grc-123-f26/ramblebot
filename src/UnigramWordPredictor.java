@@ -117,7 +117,10 @@ public class UnigramWordPredictor implements WordPredictor {
     if (!neighborMap.containsKey(lastWord)) {
       //make list of words
       List <String> words = neighborMap.get(lastWord);
-      //get random word from words
+      //get random word from words Math.random(0, 1) ;
+      //convert to int
+      double randomIndex = (Math.random() * words.size());
+      int randIndex = (int) (randomIndex);
     }
     return null;
   }
