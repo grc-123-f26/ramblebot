@@ -56,7 +56,14 @@ public class UnigramWordPredictor implements WordPredictor {
     neighborMap = new HashMap<>();
     // loop
     for(int i = 0; i < trainingWords.size() -1; i ++){
-      
+      // pull two neighbouring words
+      String curr = trainingWords.get(i);
+      String next = trainingWords.get(i + 1);
+      //For each position, find the current word and the next word.
+      if( !neighborMap.containsKey(curr)){
+        neighborMap.put(curr,new ArrayList<>());
+      }
+      neighborMap.get(curr).add(next);
     }
   }
 
