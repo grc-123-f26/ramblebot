@@ -114,18 +114,22 @@ public class UnigramWordPredictor implements WordPredictor {
    */
   public String predictNextWord(List<String> context) {
     String lastWord = context.get(context.size()-1);
-    if (!neighborMap.containsKey(lastWord)) {
+    if (neighborMap.containsKey(lastWord)) {
       //make list of words
       List <String> words = neighborMap.get(lastWord);
-      //get random word from words Math.random(0, 1) ;
+      //get random word from words Math.random() <<is double ;
       //convert to int
       double randomIndex = (Math.random() * words.size());
       int randIndex = (int) (randomIndex);
       return words.get(randIndex);
     } else {
-      
+      //Make list of all keys & select random
+      List<String> allKeys = new ArrayList<>(neighborMap.keySet());
+      //pick rand word >> convert to int
+      double randomIndex = (Math.random()* allKeys.size());
+      int randIndex = (int) (randomIndex);
+      return allKeys.get(randIndex);
     }
-    return null;
   }
   
   /**
