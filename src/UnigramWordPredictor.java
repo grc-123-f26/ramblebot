@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Scanner;
  * words that directly follow it in the text.
  */
 public class UnigramWordPredictor implements WordPredictor {
-  private Map<String, List<String>> neighborMap;
+  private Map<String, List<String>> neighborMap = new HashMap<>();
   private Tokenizer tokenizer;
 
   /**
@@ -52,6 +53,21 @@ public class UnigramWordPredictor implements WordPredictor {
     List<String> trainingWords = tokenizer.tokenize(scanner);
 
     // TODO: Convert the trainingWords into neighborMap here
+    for (int i = 0; i < trainingWords.size() - 1; i++) {
+      String currentWord = trainingWords.get(i);
+      String nextWord = trainingWords.get(i + 1);
+
+      if (!neighborMap.containsKey(currentWord)) {
+        // if word doesnt exist in map...
+        List<String> neighbors = new ArrayList<>(); // make a new list
+        neighbors.add(nextWord); // add it
+        neighborMap.put(currentWord, neighbors); // store the list in the map
+      } else {
+        // if the word does exist in the map...
+        List<String> neighbors = neighborMap.get(currentWord); // grab the existing list
+        neighbors.add(nextWord); // store the next word in the map
+      }
+    }
   }
 
   /**
@@ -105,7 +121,21 @@ public class UnigramWordPredictor implements WordPredictor {
   public String predictNextWord(List<String> context) {
     // TODO: Return a predicted word given the words preceding it
     // Hint: only the last word in context should be looked at
-    return null;
+
+    // researched from source below
+    // https://www.geeksforgeeks.org/java/generating-random-numbers-in-java/
+    Random random = new Random();
+    String lastWord = context.get(context.size() - 1); // get the last element
+
+    if (neighborMap.containsKey(lastWord)) {
+      List<String> neighbors = neighborMap.get(lastWord);
+
+      int index = random.nextInt(neighbors.size()); // choose a random word within the list
+      String word = neighbors.get(index); // grab that word
+      return word; // return it
+    }
+
+    return null; // null if no words are in map
   }
   
   /**
