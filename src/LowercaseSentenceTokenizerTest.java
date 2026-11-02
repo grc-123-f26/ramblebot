@@ -17,8 +17,20 @@ class LowercaseSentenceTokenizerTest {
 
     // Wave 2
     /*
-     * Write your test here!
+     * Tests that it ignores multiple spaces
      */
+    @Test
+    public void testMultipleSpaces() {
+        //arrange
+        String input = "hello   world";
+        Scanner scanner = new Scanner(input);
+        List<String> expected = List.of("hello", "world");
+        Tokenizer tokenizer = new LowercaseSentenceTokenizer();
+        //act
+        List<String> actual = tokenizer.tokenize(scanner);
+        //assert
+        assertEquals(expected, actual);
+    }
     
 
     // Wave 3
