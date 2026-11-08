@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Random;
 
 /**
  * A class for predicting the next word in a sequence using a unigram model.
@@ -48,11 +49,24 @@ public class UnigramWordPredictor implements WordPredictor {
    * 
    * @param scanner the Scanner to read the training text from
    */
-  public void train(Scanner scanner) {
-    List<String> trainingWords = tokenizer.tokenize(scanner);
+   public void train(Scanner scanner) {
+        List<String> trainingWords = tokenizer.tokenize(scanner);
 
-    // TODO: Convert the trainingWords into neighborMap here
-  }
+        neighborMap = new HashMap<>();
+
+        for (int i = 0; i < trainingWords.size() - 1; i++) {
+
+            String currentWord = trainingWords.get(i);
+            String nextWord = trainingWords.get(i + 1);
+
+            if (!neighborMap.containsKey(currentWord)) {
+                neighborMap.put(currentWord, new ArrayList<>());
+            }
+
+            neighborMap.get(currentWord).add(nextWord);
+        }
+    }
+
 
   /**
    * Predicts the next word based on the given context.
@@ -103,10 +117,27 @@ public class UnigramWordPredictor implements WordPredictor {
    * @return the predicted next word
    */
   public String predictNextWord(List<String> context) {
-    // TODO: Return a predicted word given the words preceding it
-    // Hint: only the last word in context should be looked at
-    return null;
-  }
+    Random random = new Random();
+
+    if (context == null || context.isEmpty()) {
+        List<String> words = new ArrayList<>(neighborMap.keySet());
+        return words.get(random.nextInt(words.size()));
+    }
+
+    String lastWord = context.get(context.size() - 1);
+
+    if (neighborMap.containsKey(lastWord)) {
+        List<String> nextWords = neighborMap.get(lastWord);
+
+        int randomIndex = random.nextInt(nextWords.size());
+
+        return nextWords.get(randomIndex);
+    }
+
+    List<String> words = new ArrayList<>(neighborMap.keySet());
+
+    return words.get(random.nextInt(words.size()));
+}
   
   /**
    * Returns a copy of the neighbor map. The neighbor map is a mapping 

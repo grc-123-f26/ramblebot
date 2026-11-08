@@ -2,6 +2,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnigramWordPredictorTest {
@@ -179,4 +181,19 @@ class UnigramWordPredictorTest {
             }
         }
     }
+    @Test
+    void testPredictWithOnePossibleWord() {
+    Tokenizer tokenizer = new LowercaseSentenceTokenizer();
+
+    UnigramWordPredictor predictor =
+        new UnigramWordPredictor(tokenizer);
+
+    Scanner scanner = new Scanner("the cat sleeps.");
+
+    predictor.train(scanner);
+
+    String result = predictor.predictNextWord(List.of("the"));
+
+    assertEquals("cat", result);
+}
 }
